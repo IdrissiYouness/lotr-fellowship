@@ -67,10 +67,10 @@ class FellowshipService {
     return `${hero.name} uses ${ability.name}!`;
   }
 
+  // changing the logic to depends on repository instead
   findByRace(race: Race): HeroSummary[] {
     return this.heroes
-      .getAll()
-      .filter(hero => hero.race === race)
+      .findByRace(race)
       .map(({ id, name, race, faction }) => ({ id, name, race, faction }));
   }
 
@@ -139,6 +139,14 @@ console.log(fellowship.findByRace("Man"));
 //somehow this will raise an error if i delete the 140 line
 // @ts-expect-error id is not allowed in NewHero
 fellowship.registerHero({ id: 99, name: "Fake", race: "Elf", faction: "Rivendell", level: 1, active: true });
+
+
+console.log("\n Exe 2: find heroes by race ");
+console.log(heroes.findByRace("Hobbit"));
+console.log(heroes.findByRace("Elf"));
+
+// @ts-expect-error "Orc" is not a valid Race :) i get it now
+heroes.findByRace("Orc");
 
 console.log("\n Type guard");
 const unknownHero: unknown = heroes.findById(1);

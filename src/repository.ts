@@ -28,5 +28,9 @@ export class Repository<T extends { id: number }> {
   }
 }
 
-export class HeroRepository extends Repository<Hero> {}
+export class HeroRepository extends Repository<Hero> {
+  findByRace(race: Hero["race"]): Hero[] {
+      return this.getAll().filter(hero => hero.race === race);
+    }
+}
 export class AbilityRepository extends Repository<Ability> {}

@@ -3,6 +3,7 @@ import {
   type Hero,
   type NewHero,
   type Ability,
+  type AbilityUsedEvent,
   type Race,
   type Faction,
   type FellowshipEvent,
@@ -88,14 +89,15 @@ class FellowshipService {
     return this.heroes.update(id, changes);
   }
 
-  getAbilityEvents(
-    events: FellowshipEvent[]
-  ): Extract<FellowshipEvent, { type: "ability-used" }>[] {
+  getAbilityEvents(events: FellowshipEvent[]): AbilityUsedEvent[] {
     return events.filter(
-      (event): event is Extract<FellowshipEvent, { type: "ability-used" }> =>
-        event.type === "ability-used"
+      (event): event is AbilityUsedEvent => event.type === "ability-used"
     );
   }
+}
+
+function handleAbilityUsed(event: AbilityUsedEvent): void {
+  console.log(`Hero ${event.heroId} used ${event.abilityName}`);
 }
 
 // sampling with random data
@@ -147,6 +149,12 @@ console.log(heroes.findByRace("Elf"));
 
 // @ts-expect-error "Orc" is not a valid Race :) i get it now
 heroes.findByRace("Orc");
+
+console.log("\n Exe 3: ability-used handler");
+handleAbilityUsed({ type: "ability-used", heroId: 1, abilityName: "Sting" });
+
+// @ts-expect-error a level-up event is not an AbilityUsedEvent
+handleAbilityUsed({ type: "level-up", heroId: 2, newLevel: 9 });
 
 console.log("\n Type guard");
 const unknownHero: unknown = heroes.findById(1);

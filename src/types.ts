@@ -38,6 +38,8 @@ export type FellowshipEvent =
   | { type: "level-up"; heroId: number; newLevel: number }
   | { type: "hero-fallen"; heroId: number };
 
+export type AbilityUsedEvent = Extract<FellowshipEvent, { type: "ability-used" }>;
+
 export type AbilityOutput<T extends AbilityCategory> =
   T extends "attack" ? number :
   T extends "defense" ? boolean :

@@ -1,6 +1,7 @@
 import {
   FACTIONS,
   type Hero,
+  type NewHero,
   type Ability,
   type Race,
   type Faction,
@@ -73,6 +74,16 @@ class FellowshipService {
       .map(({ id, name, race, faction }) => ({ id, name, race, faction }));
   }
 
+  registerHero(newHero: NewHero): Hero {
+    const ids = this.heroes.getAll().map(hero => hero.id);
+    const nextId = Math.max(0, ...ids) + 1;
+
+    const hero: Hero = { ...newHero, id: nextId };
+    this.heroes.add(hero);
+
+    return hero;
+  }
+
   updateHero(id: number, changes: HeroUpdate): boolean {
     return this.heroes.update(id, changes);
   }
@@ -113,6 +124,21 @@ console.log(fellowship.findByRace("Hobbit"));
 console.log("\n Update a hero");
 fellowship.updateHero(1, { level: 6 });
 console.log(heroes.findById(1));
+
+console.log("\n Register a new hero (NewHero) ");
+const eowyn = fellowship.registerHero({
+  name: "Eowyn",
+  race: "Man",
+  faction: "Rohan",
+  level: 7,
+  active: true,
+});
+console.log(eowyn);
+console.log(fellowship.findByRace("Man"));
+
+//somehow this will raise an error if i delete the 140 line
+// @ts-expect-error id is not allowed in NewHero
+fellowship.registerHero({ id: 99, name: "Fake", race: "Elf", faction: "Rivendell", level: 1, active: true });
 
 console.log("\n Type guard");
 const unknownHero: unknown = heroes.findById(1);

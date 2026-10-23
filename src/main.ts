@@ -1,5 +1,6 @@
 import {
   FACTIONS,
+  RACES,
   type Hero,
   type NewHero,
   type Ability,
@@ -21,11 +22,8 @@ import {
 import { HeroRepository, AbilityRepository } from "./repository";
 import { Log, Cache } from "./decorators";
 
-// existing type guards
-const validRaces: readonly Race[] = ["Hobbit", "Elf", "Dwarf", "Man"];
-
 function isRace(value: unknown): value is Race {
-  return typeof value === "string" && validRaces.some(race => race === value);
+  return typeof value === "string" && RACES.some(race => race === value);
 }
 
 function isFaction(value: unknown): value is Faction {
@@ -189,6 +187,33 @@ console.log(calculator.calculateDamage(5, 2));
 
 const otherCalculator = new DamageCalculator();
 console.log(otherCalculator.calculateDamage(10, 3));
+
+console.log("\n Exe 6: strict type guard");
+
+const validData: unknown = {
+  id: 1, name: "Frodo Baggins", race: "Hobbit",
+  faction: "Shire", level: 5, active: true,
+};
+
+const invalidRace: unknown = {
+  id: 2, name: "Gothmog", race: "Orc",
+  faction: "Mordor", level: 5, active: true,
+};
+
+const invalidFaction: unknown = {
+  id: 3, name: "Saruman", race: "Man",
+  faction: "Isengard", level: 9, active: true,
+};
+
+console.log(isHero(validData));
+console.log(isHero(invalidRace));
+console.log(isHero(invalidFaction));
+console.log(isHero(null));
+console.log(isHero({ id: "4" }));
+
+if (isHero(validData)) {
+  console.log(`${validData.name}: ${validData.race} / ${validData.faction}`);
+}
 
 console.log("\n Type guard");
 const unknownHero: unknown = heroes.findById(1);

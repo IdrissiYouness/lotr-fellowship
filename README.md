@@ -1,21 +1,32 @@
-# lotr-fellowship
+# Lord of the Rings: Fellowship TS Manager
 
-To install dependencies:
+A TypeScript practice project themed on Middle-earth: generics, utility types, decorators and type guards. Built with [Bun](https://bun.sh).
+
+## Run
 
 ```bash
 bun install
+bun start            # run src/main.ts
+bun run typecheck    # type-check (Bun does not do it on its own)
 ```
 
-To run:
+## Structure
 
-```bash
-bun run index.ts
+```
+src/
+├── types.ts        # types, utility and conditional types
+├── repository.ts   # generic Repository<T>
+├── decorators.ts   # Log, MeasureTime, ValidateAbilityPower, Cache
+└── main.ts         # FellowshipService, type guards, demos
 ```
 
-To type check:
+## Exercises
 
-```bash
-bun check
-```
-
-This project was created using `bun init` in bun v1.4.3. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+| # | Notion | Where |
+|---|---|---|
+| 1 | `Omit` | `registerHero` |
+| 2 | Indexed access type | `HeroRepository.findByRace` |
+| 3 | `Extract` | `AbilityUsedEvent` |
+| 4 | Method decorator (validation) | `ValidateAbilityPower` |
+| 5 | Method decorator (cache) | `Cache` |
+| 6 | Type guard | `isHero`, `isRace`, `isFaction` |

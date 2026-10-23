@@ -19,7 +19,7 @@ import {
 } from "./types";
 
 import { HeroRepository, AbilityRepository } from "./repository";
-import { Log } from "./decorators";
+import { Log, Cache } from "./decorators";
 
 // existing type guards
 const validRaces: readonly Race[] = ["Hobbit", "Elf", "Dwarf", "Man"];
@@ -100,6 +100,14 @@ function handleAbilityUsed(event: AbilityUsedEvent): void {
   console.log(`Hero ${event.heroId} used ${event.abilityName}`);
 }
 
+class DamageCalculator {
+  @Cache
+  calculateDamage(basePower: number, multiplier: number): number {
+    console.log("Calculating...");
+    return basePower * multiplier;
+  }
+}
+
 // sampling with random data
 // note : the level is choosed by me based on the importance of the character and his strengths
 const heroes = new HeroRepository();
@@ -166,7 +174,21 @@ try {
   console.log("Rejected:", error instanceof Error ? error.message : error);
 }
 
-console.log(abilities.getAll().length); // 4: Cursed Blade was not stored
+console.log(abilities.getAll().length); //cursed blade rejected
+
+
+console.log("\n Exe 5: cached method");
+
+//simulating miss and hits calculations
+const calculator = new DamageCalculator();
+
+console.log(calculator.calculateDamage(10, 3));
+console.log(calculator.calculateDamage(10, 3));
+console.log(calculator.calculateDamage(5, 2));
+
+
+const otherCalculator = new DamageCalculator();
+console.log(otherCalculator.calculateDamage(10, 3));
 
 console.log("\n Type guard");
 const unknownHero: unknown = heroes.findById(1);

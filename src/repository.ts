@@ -1,5 +1,5 @@
 import type { Hero, Ability } from "./types";
-import { Log, MeasureTime } from "./decorators";
+import { Log, MeasureTime, ValidateAbilityPower } from "./decorators";
 
 export class Repository<T extends { id: number }> {
   private items: T[] = [];
@@ -33,4 +33,10 @@ export class HeroRepository extends Repository<Hero> {
       return this.getAll().filter(hero => hero.race === race);
     }
 }
-export class AbilityRepository extends Repository<Ability> {}
+
+export class AbilityRepository extends Repository<Ability> {
+  @ValidateAbilityPower
+  override add(ability: Ability): void {
+    super.add(ability);
+  }
+}

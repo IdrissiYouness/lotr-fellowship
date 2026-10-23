@@ -156,6 +156,18 @@ handleAbilityUsed({ type: "ability-used", heroId: 1, abilityName: "Sting" });
 // @ts-expect-error a level-up event is not an AbilityUsedEvent
 handleAbilityUsed({ type: "level-up", heroId: 2, newLevel: 9 });
 
+
+console.log("\n Exe 4: validate ability power");
+abilities.add({ id: 204, name: "Lembas Bread", category: "healing", power: 50 });
+
+try {
+  abilities.add({ id: 205, name: "Cursed Blade", category: "attack", power: -10 });
+} catch (error: unknown) {
+  console.log("Rejected:", error instanceof Error ? error.message : error);
+}
+
+console.log(abilities.getAll().length); // 4: Cursed Blade was not stored
+
 console.log("\n Type guard");
 const unknownHero: unknown = heroes.findById(1);
 if (isHero(unknownHero)) {

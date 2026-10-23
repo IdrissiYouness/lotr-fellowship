@@ -1,4 +1,5 @@
-export type Race = "Hobbit" | "Elf" | "Dwarf" | "Man";
+export const RACES = ["Hobbit", "Elf", "Dwarf", "Man"] as const;
+export type Race = (typeof RACES)[number];
 
 export const FACTIONS = [
   "Gondor",
